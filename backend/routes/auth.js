@@ -1,4 +1,5 @@
 const express = require('express')
+const bcrypt = require('bcryptjs')
 const prisma = require('../src/prisma')
 
 const router = express.Router()
@@ -17,11 +18,14 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ error: 'email already in use' })
     }
 
+    // 10 rounds is fine for this, no need for more
+    const hashed = await bcrypt.hash(password, 10)
+
     const user = await prisma.user.create({
       data: {
         name,
         email,
-        password,
+        password: hashed,
         role: role === 'admin' ? 'admin' : 'member'
       }
     })
