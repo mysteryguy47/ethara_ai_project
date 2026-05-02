@@ -17,4 +17,44 @@ model User {
   password  String
   role      String   @default("member")
   createdAt DateTime @default(now())
+
+  projects  ProjectMember[]
+  tasks     Task[]          @relation("AssignedTasks")
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+
+  members ProjectMember[]
+  tasks   Task[]
+}
+
+// a user can be admin in one project and member in another
+model ProjectMember {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  projectId Int
+  role      String  @default("member")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, projectId])
+}
+
+model Task {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  status      String    @default("todo")
+  dueDate     DateTime?
+  projectId   Int
+  assignedTo  Int?
+  createdAt   DateTime  @default(now())
+
+  project  Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignee User?   @relation("AssignedTasks", fields: [assignedTo], references: [id], onDelete: SetNull)
 }
