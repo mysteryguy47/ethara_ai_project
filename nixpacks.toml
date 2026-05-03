@@ -1,11 +1,11 @@
 [phases.setup]
-nixPkgs = ["nodejs_18", "openssl"]
+nixPkgs = ["nodejs_20", "openssl"]
 
 [phases.install]
-cmds = ["cd backend && npm install"]
+cmds = ["cd backend && npm install", "cd frontend && npm install"]
 
 [phases.build]
-cmds = ["cd frontend && npm install && npm run build"]
+cmds = ["cd frontend && npx vite build"]
 
 [start]
 cmd = "cd backend && node index.js"
