@@ -1,9 +1,13 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<div style={{ padding: 20 }}>TaskFlow — work in progress</div>} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   )
 }
