@@ -2,7 +2,7 @@ const prisma = require('../prisma')
 
 // checks if the requesting user has a specific role in the project
 // usage: requireProjectRole('admin') or requireProjectRole('member')
-async function requireProjectRole(role) {
+function requireProjectRole(role) {
   return async (req, res, next) => {
     const projectId = parseInt(req.params.id || req.params.projectId)
     const userId = req.user.id
